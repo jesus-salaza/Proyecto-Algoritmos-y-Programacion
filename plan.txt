@@ -3,11 +3,12 @@ Clases pensadas:
 municipio 
 localidad
 sistema
-
+clima
+consulta
 
 Tareas importantes:
 - crear clases (Jesus)
-- cargar zonas_caracas.json (Y hacer reporte) ()
+- cargar zonas_caracas.json (Y hacer reporte) (Jesus)
 - funcion API en tiempo real para la consulta
 - requerimiento 2. consultas
 - estadisticas
