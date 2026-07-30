@@ -1,0 +1,17 @@
+
+Clases pensadas:
+municipio 
+localidad
+sistema
+
+
+Tareas importantes:
+- crear clases (Jesus)
+- cargar zonas_caracas.json (Y hacer reporte) ()
+- funcion API en tiempo real para la consulta
+- requerimiento 2. consultas
+- estadisticas
+- historicos
+
+
+Notas:
