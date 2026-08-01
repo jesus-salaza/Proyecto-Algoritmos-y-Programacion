@@ -9,7 +9,7 @@ consulta
 Tareas importantes:
 - crear clases (Jesus)
 - cargar zonas_caracas.json (Y hacer reporte) (Jesus)
-- funcion API en tiempo real para la consulta
+- funcion API en tiempo real para la consulta (Rosil)
 - requerimiento 2. consultas
 - estadisticas
 - historicos
