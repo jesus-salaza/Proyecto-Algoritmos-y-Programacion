@@ -1,6 +1,7 @@
 # Ya vi como funciona esto, mas tarde hago las funciones que usaremos
 
-# para probarlo y usarlo instalen esto en la terminal pip install openmeteo-requests
+# Las funciones las hare mas tarde solo con request solo porque vi en el proyecto que solo se puede usar la libreria request
+# y no la que se instala para usar este codigo 
 
 import openmeteo_requests
 
