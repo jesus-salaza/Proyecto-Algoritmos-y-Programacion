@@ -45,3 +45,4 @@ def elegir_opcion(lista_opciones, titulo="", personalizado=False):
         while not validar_numero(int(selected), 0, len(lista_opciones)):
             print("     Opcion invalida")
             selected = input("Seleccione una opcion o ingrese 0 para salir: ")
+        return selected

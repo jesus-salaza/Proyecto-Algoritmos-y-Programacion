@@ -5,6 +5,6 @@ def main():
     El programa necesita tener instalada OpenMeteo-request 
     """    
     sistema = Sistema()
-    sistema.iniciar()    
+    sistema.iniciar("zonas_caracas.json")    
     
 main()

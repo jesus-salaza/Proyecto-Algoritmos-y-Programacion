@@ -1,35 +1,60 @@
+from Municipio import Municipio
+from Localidad import Localidad
 from funciones import *
+import json
 class Sistema:
     """ Clase principal que manejara el sistema y tendra todas las 
     opciones y requerimientos
     """    
     def __init__(self):
-        self.nombres_municipios = [
-            "Chacao"
-            "Baruta"
-            "El Hatillo"
-            "Sucre"
-            "Libertador"
-        ]
+        self.nombres_municipios = []
         self.municipios = []
+        self.consultas = []
 
-    def iniciar(self):
+    def cargar_municipios(self, nombre_json_municipios):
+        """ Metodo que carga los municipios del json
+        """
+        
+        with open(nombre_json_municipios, "r", encoding="utf-8") as archivo:
+            data = json.load(archivo)
+
+        lista_llaves = list(data.keys())
+        
+        for nombre_municipio in lista_llaves:
+            municipio = Municipio(nombre_municipio)
+            
+            for localidad in data[nombre_municipio]:
+                
+                nombre_localidad = localidad["localidad"]
+                latitud = localidad["latitud"]
+                longitud = localidad["longitud"]
+                nueva_localidad = Localidad(nombre_localidad, latitud, longitud)
+                
+                municipio.agregar_localidad(nueva_localidad)
+            
+            self.nombres_municipios.append(nombre_municipio)
+            self.municipios.append(municipio)
+            
+        print("Municipios cargados correctamente")
+            
+    def iniciar(self,nombre_json_municipios):
         """ Metodo que inicia el sistema
         """        
-        # Carga aqui los municipios Jesus
+        self.cargar_municipios(nombre_json_municipios)
         self.menu_principal()
 
     def menu_principal(self):
         """ Método que muestra el menu principal del sistema
         """        
         while True:
-            titulo = "Menu principal MeteoCaracas"
+            
+            print(' ---------- MENU PRINCIPAL METEOCARACAS ----------"\n')
             opciones = [
-                "Buscar del clima en tiempo real",
+                "Consulta del clima en tiempo real",
                 "Reportes y estadisticas",
                 "Historicos"
             ]
-            opcion = elegir_opcion(opciones, titulo, personalizado=True)
+            opcion = elegir_opcion(opciones)
             if opcion == "0":
                 print("Saliendo del sistema...")
                 break
@@ -41,9 +66,21 @@ class Sistema:
                 self.historicos()
 
     def menu_buscar_clima(self):
-        print("Menu buscar clima")
-        pass
-    
+        while True:
+            titulo = "Consulta del clima en tiempo real"
+            opciones = [
+                        "Buscar por municipio y localidad",
+                        "Buscar por nombre de la localidad",
+                    ]
+            opcion = elegir_opcion(opciones, titulo, True)
+            if opcion == "0":
+                print("Saliendo al menu pricipal...")
+                break
+            if opcion == "1": # Buscar por municipio y localidad
+                pass
+            if opcion == "2": # Buscar por nombre de la localidad
+                pass
+                        
     def reportes_estadisticas(self):
         print("Menu reportes y estadisticas")
         pass
