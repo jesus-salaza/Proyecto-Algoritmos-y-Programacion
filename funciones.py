@@ -30,19 +30,19 @@ def elegir_opcion(lista_opciones, titulo="", personalizado=False):
     """
     if personalizado:
         print(f" ----- {titulo} ----- \n")
-        for option in lista_opciones:
-            print(f"    {lista_opciones.index(option)+1}. {option}")
-        selected = input("Seleccione una opcion o ingrese 0 para salir: ")
-        while not validar_numero(int(selected), 0, len(lista_opciones)):
+        for opcion in lista_opciones:
+            print(f"    {lista_opciones.index(opcion)+1}. {opcion}")
+        seleccionada = input("Seleccione una opcion o ingrese 0 para salir: ")
+        while not validar_numero(int(seleccionada), 0, len(lista_opciones)):
             print("     Opcion invalida")
-            selected = input("Seleccione una opcion o ingrese 0 para salir: ")
-        return selected
+            seleccionada = input("Seleccione una opcion o ingrese 0 para salir: ")
+        return seleccionada
         
     else:
-        for option in lista_opciones:
-            print(f"{lista_opciones.index(option)+1}. {option}")
-        selected = input("Seleccione una opcion o ingrese 0 para salir: ")
-        while not validar_numero(int(selected), 0, len(lista_opciones)):
+        for opcion in lista_opciones:
+            print(f"{lista_opciones.index(opcion)+1}. {opcion}")
+        seleccionada = input("Seleccione una opcion o ingrese 0 para salir: ")
+        while not validar_numero(int(seleccionada), 0, len(lista_opciones)):
             print("     Opcion invalida")
-            selected = input("Seleccione una opcion o ingrese 0 para salir: ")
-        return selected
+            seleccionada = input("Seleccione una opcion o ingrese 0 para salir: ")
+        return seleccionada
