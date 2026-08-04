@@ -77,7 +77,29 @@ class Sistema:
                 print("Saliendo al menu pricipal...")
                 break
             if opcion == "1": # Buscar por municipio y localidad
-                pass
+                while True:
+                    
+                    titulo = "Buscar por municipio y localidad"
+                    n_municipio = elegir_opcion(self.municipios, titulo)
+                    if n_municipio == "0":
+                        print("Saliendo al menu de consulta del clima")
+                        break
+                    elegido = self.municipios[int(n_municipio)-1]
+                    
+                    titulo = "Seleccione la localidad"
+                    localidades_disponibles = []
+                    for localidad in elegido.localidades:
+                        localidades_disponibles.append(localidad.nombre)  # Lo reviso luego, SIRVE
+                    n_localidad = elegir_opcion(localidades_disponibles, titulo)
+                    if n_localidad == "0":
+                        print("Saliendo al menu de consulta del clima")
+                        break
+                    elegido_localidad = elegido.localidades[int(n_localidad)-1]
+                    
+                    print(f"Consultando el clima en tiempo real para {elegido_localidad.nombre}...") 
+                    
+                    # Rosilllll, que funcion usooo?
+                    
             if opcion == "2": # Buscar por nombre de la localidad
                 pass
                         
