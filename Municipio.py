@@ -7,3 +7,9 @@ class Municipio:
 
     def agregar_localidad(self, localidad):
         self.localidades.append(localidad)
+        
+    def mostrar_detalles(self, posicion):
+        print(f"\n  Municipio: {self.nombre}")
+        self.localidades[posicion].mostrar_detalles()
+        
+        

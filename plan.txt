@@ -17,3 +17,5 @@ Tareas importantes:
 
 Notas:
 Ya estoy viendo lo de la api muchachos, empece con los menus pero sigo mas tarde Att Rosil
+
+urb el retiro me dio error, vi que no tiene latitud y longitud, eso se va a cargar igual?

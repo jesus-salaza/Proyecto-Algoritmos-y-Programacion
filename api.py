@@ -42,7 +42,9 @@ def consultar_clima_por_coordenadas(latitud, longitud):
         response = requests.get(url, params=parametros)
         response.raise_for_status()
         data = response.json()
+        #print(data)  
 
+        fecha_hora = data.get("current", {}).get("time", "N/A")
         actual = data.get("current", {})
         unidades = data.get("current_units", {})
 
@@ -52,11 +54,13 @@ def consultar_clima_por_coordenadas(latitud, longitud):
 
         # Podemos cambiar esto dependiendo como lo queramos
         resultado = {
+            "fecha_hora": fecha_hora,
             "latitud": latitud,
             "longitud": longitud,
             "temperatura": f"{actual.get('temperature_2m')} {unidades.get('temperature_2m', '°C')}",
             "humedad": f"{actual.get('relative_humidity_2m')} {unidades.get('relative_humidity_2m', '%')}",
             "viento": f"{actual.get('wind_speed_10m')} {unidades.get('wind_speed_10m', 'km/h')}",
+            "codigo_tiempo": codigo,
             "estado_tiempo": estado_traducido
         }
         
@@ -66,9 +70,3 @@ def consultar_clima_por_coordenadas(latitud, longitud):
         print(f"Error al conectar con la API de Open-Meteo: {e}")
         return {}
     
-    
-lat = -3.20333
-longi = -52.20639
-
-# Pruebenlo 
-print(consultar_clima_por_coordenadas(lat, longi))

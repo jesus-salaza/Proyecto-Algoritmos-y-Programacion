@@ -29,13 +29,13 @@ def elegir_opcion(lista_opciones, titulo="", personalizado=False):
         
     """
     if personalizado:
-        print(f" ----- {titulo} ----- \n")
+        print(f"\n ----- {titulo} ----- \n")
         for opcion in lista_opciones:
             print(f"    {lista_opciones.index(opcion)+1}. {opcion}")
-        seleccionada = input("Seleccione una opcion o ingrese 0 para salir: ")
+        seleccionada = input("\nSeleccione una opcion o ingrese 0 para salir: ")
         while not validar_numero(int(seleccionada), 0, len(lista_opciones)):
             print("     Opcion invalida")
-            seleccionada = input("Seleccione una opcion o ingrese 0 para salir: ")
+            seleccionada = input("\nSeleccione una opcion o ingrese 0 para salir: ")
         return seleccionada
         
     else:

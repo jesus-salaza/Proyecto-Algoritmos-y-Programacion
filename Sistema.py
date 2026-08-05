@@ -1,6 +1,9 @@
 from Municipio import Municipio
 from Localidad import Localidad
+from Clima import Clima
+from Consulta import Consulta
 from funciones import *
+from api import *
 import json
 class Sistema:
     """ Clase principal que manejara el sistema y tendra todas las 
@@ -24,6 +27,8 @@ class Sistema:
             municipio = Municipio(nombre_municipio)
             
             for localidad in data[nombre_municipio]:
+                
+                # Revisa lo de latitud y longitud
                 
                 nombre_localidad = localidad["localidad"]
                 latitud = localidad["latitud"]
@@ -79,26 +84,47 @@ class Sistema:
             if opcion == "1": # Buscar por municipio y localidad
                 while True:
                     
-                    titulo = "Buscar por municipio y localidad"
-                    n_municipio = elegir_opcion(self.municipios, titulo)
+                    titulo = "Selección del municipio"
+                    n_municipio = elegir_opcion(self.nombres_municipios, titulo, True)
                     if n_municipio == "0":
                         print("Saliendo al menu de consulta del clima")
                         break
-                    elegido = self.municipios[int(n_municipio)-1]
+                    elegido = self.municipios[int(n_municipio)-1] # Nombre del municipio
                     
-                    titulo = "Seleccione la localidad"
+                    titulo = "Selección de la localidad"
                     localidades_disponibles = []
                     for localidad in elegido.localidades:
                         localidades_disponibles.append(localidad.nombre)  # Lo reviso luego, SIRVE
-                    n_localidad = elegir_opcion(localidades_disponibles, titulo)
+                    n_localidad = elegir_opcion(localidades_disponibles, titulo,True)
                     if n_localidad == "0":
                         print("Saliendo al menu de consulta del clima")
                         break
-                    elegido_localidad = elegido.localidades[int(n_localidad)-1]
+                    elegido_localidad = elegido.localidades[int(n_localidad)-1] # Objeto localidad
                     
-                    print(f"Consultando el clima en tiempo real para {elegido_localidad.nombre}...") 
+                    print(f"\nConsultando el clima en tiempo real para {elegido_localidad.nombre}...\n") 
                     
-                    # Rosilllll, que funcion usooo?
+                    datos_clima = consultar_clima_por_coordenadas(elegido_localidad.latitud, elegido_localidad.longitud)
+                    
+                    if datos_clima:
+                        fecha_hora = datos_clima["fecha_hora"]
+                        clima = Clima(
+                            datos_clima["temperatura"],
+                            datos_clima["humedad"],
+                            datos_clima["viento"],
+                            datos_clima["codigo_tiempo"],
+                            datos_clima["estado_tiempo"]
+                        )
+                        elegido_localidad.cambiar_clima_actual(clima)
+                        elegido.mostrar_detalles(int(n_localidad)-1)
+                    
+                        # Crear consulta
+                        nueva_consulta = Consulta(
+                            fecha= fecha_hora,
+                            municipio=elegido.nombre,
+                            posicion_localidad=int(n_localidad)-1
+                        )
+                        nueva_consulta.mostrar_detalles(self)
+                        self.consultas.append(nueva_consulta)
                     
             if opcion == "2": # Buscar por nombre de la localidad
                 pass

@@ -11,11 +11,11 @@ class Localidad:
         """Cambia la información del clima de la localidad."""
         self.clima = clima    
         
-    def show(self):
+    def mostrar_detalles(self):
         """Muestra la información de la localidad y su clima actual."""
-        print(f"Localidad: {self.nombre}")
-        print(f"Latitud: {self.latitud}")
-        print(f"Longitud: {self.longitud}")
+        print(f"    Localidad: {self.nombre}")
+        print(f"    Latitud: {self.latitud}")
+        print(f"    Longitud: {self.longitud}")
         if self.clima:
             self.clima.mostrar_detalles()
         else:
