@@ -10,6 +10,11 @@ def validar_numero (numero, minimo=None, maximo=None):
     Retorna:
         bool: True si el numero es valido, False en caso contrario   
     """
+    try:
+        numero = int(numero)
+    except (ValueError, TypeError):
+        return False
+
     if numero < minimo or maximo < numero:
         return False
     return True
@@ -33,7 +38,7 @@ def elegir_opcion(lista_opciones, titulo="", personalizado=False):
         for opcion in lista_opciones:
             print(f"    {lista_opciones.index(opcion)+1}. {opcion}")
         seleccionada = input("\nSeleccione una opcion o ingrese 0 para salir: ")
-        while not validar_numero(int(seleccionada), 0, len(lista_opciones)):
+        while not validar_numero(seleccionada, 0, len(lista_opciones)):
             print("     Opcion invalida")
             seleccionada = input("\nSeleccione una opcion o ingrese 0 para salir: ")
         return seleccionada
@@ -42,7 +47,7 @@ def elegir_opcion(lista_opciones, titulo="", personalizado=False):
         for opcion in lista_opciones:
             print(f"{lista_opciones.index(opcion)+1}. {opcion}")
         seleccionada = input("Seleccione una opcion o ingrese 0 para salir: ")
-        while not validar_numero(int(seleccionada), 0, len(lista_opciones)):
+        while not validar_numero(seleccionada, 0, len(lista_opciones)):
             print("     Opcion invalida")
             seleccionada = input("Seleccione una opcion o ingrese 0 para salir: ")
         return seleccionada

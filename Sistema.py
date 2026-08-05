@@ -149,14 +149,42 @@ class Sistema:
                         # Crear consulta
                         nueva_consulta = Consulta(
                             fecha= fecha_hora,
-                            municipio=elegido.nombre,
+                            municipio=elegido,
                             posicion_localidad=int(n_localidad)-1
                         )
-                        nueva_consulta.mostrar_detalles(self)
+                        nueva_consulta.mostrar_detalles()
                         self.consultas.append(nueva_consulta)
                     
             if opcion == "2": # Buscar por nombre de la localidad
-                pass
+                while True:
+                    nombre_localidad = input(f"\nIngrese el nombre de la localidad (o '0' para salir): ")
+                    if nombre_localidad == "0":
+                        print("\nSaliendo al menu de consulta del clima...")
+                        break
+            
+                    datos_clima = consultar_clima_por_nombre_localidad(nombre_localidad, self.municipios)
+                    
+                    if datos_clima:
+                        municipio = datos_clima["municipio"]
+                        posicion_localidad = datos_clima["posicion_localidad"]
+                        fecha_hora = datos_clima["fecha_hora"]
+                        clima = Clima(
+                            datos_clima["temperatura"],
+                            datos_clima["humedad"],
+                            datos_clima["viento"],
+                            datos_clima["codigo_tiempo"],
+                            datos_clima["estado_tiempo"]
+                        )
+                        
+                        # Crear consulta
+                        nueva_consulta = Consulta(
+                            fecha= fecha_hora,
+                            municipio=municipio,
+                            posicion_localidad=posicion_localidad
+                        )
+                        nueva_consulta.mostrar_detalles()
+                        self.consultas.append(nueva_consulta)
+                        break
                         
     def reportes_estadisticas(self):
         print("Menu reportes y estadisticas")

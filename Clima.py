@@ -9,8 +9,8 @@ class Clima:
         self.estado = estado
 
     def mostrar_detalles(self):
-        print("\n       Detalles del clima")
-        print(f"    Temperatura actual: {self.temperatura} °C")
-        print(f"    Humedad relativa: {self.humedad} %")
-        print(f"    Velocidad del viento: {self.viento} km/h")
+        print("\n   Detalles del clima")
+        print(f"    Temperatura actual: {self.temperatura} ")
+        print(f"    Humedad relativa: {self.humedad} ")
+        print(f"    Velocidad del viento: {self.viento} ")
         print(f"    Estado del tiempo: {self.estado}\n")
