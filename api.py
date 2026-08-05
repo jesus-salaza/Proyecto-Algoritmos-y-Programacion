@@ -67,6 +67,6 @@ def consultar_clima_por_coordenadas(latitud, longitud):
         return resultado
 
     except requests.exceptions.RequestException as e:
-        print(f"Error al conectar con la API de Open-Meteo: {e}")
+        print(f"Error de conexion con la API de Open-Meteo: {e}")
         return {}
     

@@ -12,10 +12,16 @@ class Sistema:
     def __init__(self):
         self.nombres_municipios = []
         self.municipios = []
+        self.localidades_sin_coordenadas_por_municipios = {}
         self.consultas = []
 
     def cargar_municipios(self, nombre_json_municipios):
-        """ Metodo que carga los municipios del json
+        """ Metodo que carga los municipios del json y genera el reporte en pantalla indicando 
+        por cada municipio:
+            - Cantidad de localidades cargadas.
+            - Cantidad de localidades con coordenadas geográficas.
+            - Cantidad de localidades sin coordenadas geográficas conocidas.
+            - Porcentaje de localidades con coordenadas geográficas.
         """
         
         with open(nombre_json_municipios, "r", encoding="utf-8") as archivo:
@@ -28,8 +34,6 @@ class Sistema:
             
             for localidad in data[nombre_municipio]:
                 
-                # Revisa lo de latitud y longitud
-                
                 nombre_localidad = localidad["localidad"]
                 latitud = localidad["latitud"]
                 longitud = localidad["longitud"]
@@ -41,6 +45,26 @@ class Sistema:
             self.municipios.append(municipio)
             
         print("Municipios cargados correctamente")
+        
+        # Reporte
+        print("\n ---------- REPORTE DE MUNICIPIOS Y LOCALIDADES ----------\n")
+        for municipio in self.municipios:
+            total_localidades = len(municipio.localidades)
+            localidades_con_coordenadas = 0
+            localidades_sin_coordenadas = 0
+            for localidad in municipio.localidades:
+                if localidad.latitud and localidad.longitud:
+                    localidades_con_coordenadas += 1
+                else:
+                    localidades_sin_coordenadas += 1
+            porcentaje_con_coordenadas = (localidades_con_coordenadas / total_localidades) * 100 if total_localidades > 0 else 0
+            
+            print(f"Municipio: {municipio.nombre}")
+            print(f"Cantidad de localidades cargadas: {total_localidades}")
+            print(f"Cantidad de localidades con coordenadas geográficas: {localidades_con_coordenadas}")
+            print(f"Cantidad de localidades sin coordenadas geográficas conocidas: {localidades_sin_coordenadas}")
+            print(f"Porcentaje de localidades con coordenadas geográficas: {porcentaje_con_coordenadas:.2f}%\n")
+        
             
     def iniciar(self,nombre_json_municipios):
         """ Metodo que inicia el sistema
@@ -87,22 +111,27 @@ class Sistema:
                     titulo = "Selección del municipio"
                     n_municipio = elegir_opcion(self.nombres_municipios, titulo, True)
                     if n_municipio == "0":
-                        print("Saliendo al menu de consulta del clima")
+                        print("\nSaliendo al menu de consulta del clima...")
                         break
                     elegido = self.municipios[int(n_municipio)-1] # Nombre del municipio
                     
                     titulo = "Selección de la localidad"
                     localidades_disponibles = []
                     for localidad in elegido.localidades:
-                        localidades_disponibles.append(localidad.nombre)  # Lo reviso luego, SIRVE
+                        if localidad.latitud and localidad.longitud:
+                            localidades_disponibles.append(localidad.nombre)  
+                            
                     n_localidad = elegir_opcion(localidades_disponibles, titulo,True)
                     if n_localidad == "0":
-                        print("Saliendo al menu de consulta del clima")
+                        print("\nSaliendo al menu de consulta del clima...")
                         break
                     elegido_localidad = elegido.localidades[int(n_localidad)-1] # Objeto localidad
                     
-                    print(f"\nConsultando el clima en tiempo real para {elegido_localidad.nombre}...\n") 
+                    if not elegido_localidad.latitud or not elegido_localidad.longitud:
+                        print(f"\nLa localidad {elegido_localidad.nombre} no tiene coordenadas geográficas registradas actualmente. No se puede consultar el clima en tiempo real, intente luego.\n")
+                        continue
                     
+                    print(f"\nConsultando el clima en tiempo real para {elegido_localidad.nombre}...\n") 
                     datos_clima = consultar_clima_por_coordenadas(elegido_localidad.latitud, elegido_localidad.longitud)
                     
                     if datos_clima:
