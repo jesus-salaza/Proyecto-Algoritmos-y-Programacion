@@ -103,6 +103,11 @@ def consultar_clima_por_nombre_localidad(nombre_localidad, municipios):
     
     latitud = municipio_elegido.localidades[posicion_localidad_elegida].latitud
     longitud = municipio_elegido.localidades[posicion_localidad_elegida].longitud                    
+    
+    if latitud is None or longitud is None:
+        print(f"\nCoordenadas no disponibles para {municipio_elegido.localidades[posicion_localidad_elegida].nombre}.")
+        return None
+    
     resultado = consultar_clima_por_coordenadas(latitud, longitud)
     nuevo_clima = Clima(
     resultado["temperatura"],

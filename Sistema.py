@@ -125,7 +125,20 @@ class Sistema:
                     if n_localidad == "0":
                         print("\nSaliendo al menu de consulta del clima...")
                         break
-                    elegido_localidad = elegido.localidades[int(n_localidad)-1] # Objeto localidad
+                    
+                    # Corregir porque agarra los que no tienen coordenadas
+                    contador = 0
+                    indice = 0
+                    elegido_localidad = None
+                    for localidad in elegido.localidades:
+                        indice += 1
+                        if localidad.latitud and localidad.longitud:
+                            contador += 1
+                        if contador == int(n_localidad):
+                            elegido_localidad = localidad
+                            break
+                        
+                    #elegido_localidad = elegido.localidades[int(n_localidad)-1] # Objeto localidad
                     
                     if not elegido_localidad.latitud or not elegido_localidad.longitud:
                         print(f"\nLa localidad {elegido_localidad.nombre} no tiene coordenadas geográficas registradas actualmente. No se puede consultar el clima en tiempo real, intente luego.\n")
@@ -144,14 +157,10 @@ class Sistema:
                             datos_clima["estado_tiempo"]
                         )
                         elegido_localidad.cambiar_clima_actual(clima)
-                        elegido.mostrar_detalles(int(n_localidad)-1)
+                        #elegido.mostrar_detalles(indice-1)
                     
                         # Crear consulta
-                        nueva_consulta = Consulta(
-                            fecha= fecha_hora,
-                            municipio=elegido,
-                            posicion_localidad=int(n_localidad)-1
-                        )
+                        nueva_consulta = Consulta(fecha= fecha_hora,municipio=elegido,posicion_localidad=indice-1)
                         nueva_consulta.mostrar_detalles()
                         self.consultas.append(nueva_consulta)
                     
@@ -163,7 +172,9 @@ class Sistema:
                         break
             
                     datos_clima = consultar_clima_por_nombre_localidad(nombre_localidad, self.municipios)
-                    
+                    if datos_clima is None:
+                        print("\nSaliendo al menu de consulta del clima...")
+                        break
                     if datos_clima:
                         municipio = datos_clima["municipio"]
                         posicion_localidad = datos_clima["posicion_localidad"]
@@ -187,8 +198,63 @@ class Sistema:
                         break
                         
     def reportes_estadisticas(self):
-        print("Menu reportes y estadisticas")
-        pass
+        
+        titulo = "Reportes y Estadísticas"
+        
+        # De las consultas de la sesion actual 
+        temperaturas = []
+        if self.consultas:
+            for consulta in self.consultas:
+                municipio = consulta.municipio
+                posicion_localidad = consulta.posicion_localidad
+                localidad = municipio.localidades[posicion_localidad]
+                if localidad.clima:
+                    temperaturas.append((municipio.nombre, localidad.nombre, localidad.clima.temperatura))
+
+            # Municipio con la temperatura mas calida y mas fria 
+            if temperaturas:
+                municipio_mas_calido = '' 
+                municipio_mas_frio = ''
+                for municipio, localidad, temperatura in temperaturas:
+                    if not municipio_mas_calido or temperatura > municipio_mas_calido[2]:
+                        municipio_mas_calido = (municipio, localidad, temperatura)
+                    if not municipio_mas_frio or temperatura < municipio_mas_frio[2]:
+                        municipio_mas_frio = (municipio, localidad, temperatura)
+                        
+            # Cobertura
+            localidades_sin_coordenadas = {}
+            for municipio in self.municipios:
+                localidades_sin_coordenadas[municipio.nombre] = []
+                for localidad in municipio.localidades:
+                    if not localidad.latitud or not localidad.longitud:
+                        localidades_sin_coordenadas[municipio.nombre].append(localidad.nombre)
+            
+            # Promedio general
+            suma_temperaturas = 0
+            for tupla in temperaturas:
+                temperatura = tupla[2]
+                try:
+                    valor_temperatura = float(temperatura.split()[0])  # Extraer el valor numérico de la temperatura
+                    suma_temperaturas += valor_temperatura
+                except ValueError:
+                    print(f"Advertencia: No se pudo convertir la temperatura '{temperatura}' a número.")
+            
+            promedio_general = suma_temperaturas / len(temperaturas)
+            
+            print(f"\n ---------- {titulo} ----------\n")
+            print(f"Cantidad de consultas realizadas en la sesión: {len(self.consultas)}")
+            print(f"Municipio con la localidad más cálida: {municipio_mas_calido[0]} - Localidad: {municipio_mas_calido[1]} - Temperatura: {municipio_mas_calido[2]}")
+            print(f"Municipio con la localidad más fría: {municipio_mas_frio[0]} - Localidad: {municipio_mas_frio[1]} - Temperatura: {municipio_mas_frio[2]}")
+            print("\nCobertura Geográfica: Localidades sin coordenadas registradas:")
+            for municipio, localidades in localidades_sin_coordenadas.items():
+                if localidades:
+                    print(f"  Municipio: {municipio}")
+                    for localidad in localidades:
+                        print(f"    - {localidad}")
+            print(f"\nPromedio general de temperatura de las localidades consultadas: {promedio_general:.2f} °C")
+            
+        else:
+            print("\nNo se han realizado consultas de clima en esta sesión.")
 
     def historicos(self):
         print("Menu historicos")
