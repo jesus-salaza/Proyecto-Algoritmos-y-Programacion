@@ -1,4 +1,3 @@
-from Municipio import Municipio
 
 class Consulta:
     """Clase que representa una consulta de clima realizada por el usuario en la sesion."""

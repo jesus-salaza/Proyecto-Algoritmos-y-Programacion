@@ -10,12 +10,9 @@ Tareas importantes:
 - crear clases (Jesus)
 - cargar zonas_caracas.json (Y hacer reporte) (Jesus)
 - funcion API en tiempo real para la consulta (Rosil)
-- requerimiento 2. consultas
-- estadisticas
-- historicos
+- requerimiento 2. consultas (Eugenia y Rosil)
+- estadisticas (Eugenia)
+- historicos (Jesus)
 
 
 Notas:
-Ya estoy viendo lo de la api muchachos, empece con los menus pero sigo mas tarde Att Rosil
-
-urb el retiro me dio error, vi que no tiene latitud y longitud, eso se va a cargar igual?
