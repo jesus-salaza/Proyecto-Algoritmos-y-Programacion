@@ -12,7 +12,6 @@ class Sistema:
     def __init__(self):
         self.nombres_municipios = []
         self.municipios = []
-        self.localidades_sin_coordenadas_por_municipios = {}
         self.consultas = []
 
     def cargar_municipios(self, nombre_json_municipios):
@@ -57,7 +56,11 @@ class Sistema:
                     localidades_con_coordenadas += 1
                 else:
                     localidades_sin_coordenadas += 1
-            porcentaje_con_coordenadas = (localidades_con_coordenadas / total_localidades) * 100 if total_localidades > 0 else 0
+            
+            if total_localidades > 0:
+                porcentaje_con_coordenadas = (localidades_con_coordenadas / total_localidades) * 100  
+            else:
+                porcentaje_con_coordenadas = 0
             
             print(f"Municipio: {municipio.nombre}")
             print(f"Cantidad de localidades cargadas: {total_localidades}")
@@ -138,8 +141,6 @@ class Sistema:
                             elegido_localidad = localidad
                             break
                         
-                    #elegido_localidad = elegido.localidades[int(n_localidad)-1] # Objeto localidad
-                    
                     if not elegido_localidad.latitud or not elegido_localidad.longitud:
                         print(f"\nLa localidad {elegido_localidad.nombre} no tiene coordenadas geográficas registradas actualmente. No se puede consultar el clima en tiempo real, intente luego.\n")
                         continue
